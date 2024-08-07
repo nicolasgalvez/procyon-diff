@@ -1,0 +1,17 @@
+{
+  "name": "procyon-test",
+  "bin": {
+    "procyon-test": "start.js"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jest-image-snapshot": "^6.4.0",
+    "jest-stare": "^2.5.1",
+    "puppeteer": "^22",
+    "yargs": "^17.7.2"
+  },
+  "scripts": {
+    "test": "jest --detectOpenHandles",
+    "test:html": "bin/scripts/html-validator.js $TARGET_ENV"
+  }
+}
