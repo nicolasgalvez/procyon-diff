@@ -16,6 +16,7 @@ const argv = yargs
     description: 'Specify the pages',
     type: 'string',
   })
+  .demandOption(['domain'])
   .help()
   .alias('help', 'h')
   .argv;
@@ -43,4 +44,8 @@ const env = Object.create(process.env);
 env.CALLING_DIR = currentDir;
 
 // Execute the command from the module's root directory
-execSync(command, { stdio: 'inherit', cwd: rootDir, env });
+try {
+  execSync(command, { stdio: 'inherit', cwd: rootDir, env });
+} catch (error) {
+  console.log('finished with errors');
+}
