@@ -8,6 +8,13 @@ const puppeteer = require('puppeteer')
 const { toMatchImageSnapshot } = require('jest-image-snapshot')
 // import autoScroll from './autoscroll.js'
 
+// load environment variables
+// require('dotenv').config()
+
+// look for BASIC_AUTH_USERNAME and BASIC_AUTH_PASSWORD in the .env file
+const BASIC_AUTH_USERNAME = process.env.BASIC_AUTH_USERNAME
+const BASIC_AUTH_PASSWORD = process.env.BASIC_AUTH_PASSWORD
+
 expect.extend({ toMatchImageSnapshot })
 
 // get the calling directory
@@ -81,17 +88,11 @@ describe('Visual', () => {
   let browser
   beforeAll(async () => {
     browser = await puppeteer.launch({
-      headless: false,
+      headless: true,
       // defaultViewport: null,
       args: ['--ignore-certificate-errors'],
     })
   })
-  // Reuse tabs:
-  afterEach(async () => {
-    const pages = await browser.pages();
-    await Promise.all(pages.map(page => page.close()));
-  });
-  
   testPages.forEach((testPage) => {
     let url = testPage
     console.log('testPage', testPage)
@@ -120,11 +121,11 @@ describe('Visual', () => {
         await page.setViewport(view)
         console.log(prodDomain + url)
         // set the HTTP Basic Authentication credential
-        // await page.authenticate({'username': BASIC_AUTH_USERNAME, 'password': BASIC_AUTH_PASSWORD});
+        await page.authenticate({'username': BASIC_AUTH_USERNAME, 'password': BASIC_AUTH_PASSWORD});
         // if testPage is an object, parse the url and run the callback function
         if (typeof testPage === 'object') {
           await page.goto(prodDomain + url, { waitUntil: 'networkidle2' })
-          // await callback(page);
+          await callback(page);
         } else {
           await page.goto(prodDomain + url, { waitUntil: 'networkidle2' })
         }
