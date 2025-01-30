@@ -95,12 +95,12 @@ describe('Visual', () => {
   })
   testPages.forEach((testPage) => {
     let url = testPage
-    console.log('testPage', testPage)
+    // console.log('testPage', testPage)
     let callback = null
     if (typeof testPage === 'object') {
       ({
         url,
-        callback = () => { console.log('No callback provided') },
+        callback = () => {},
         skipViews = [],
       } = testPage)
     } else {
@@ -119,7 +119,7 @@ describe('Visual', () => {
       it(url + view.width, async () => {
         const page = await browser.newPage()
         await page.setViewport(view)
-        console.log(prodDomain + url)
+        // console.log(prodDomain + url)
         // set the HTTP Basic Authentication credential
         await page.authenticate({'username': BASIC_AUTH_USERNAME, 'password': BASIC_AUTH_PASSWORD});
         // if testPage is an object, parse the url and run the callback function
@@ -135,7 +135,7 @@ describe('Visual', () => {
         // Hide ignored areas. Testimonials that are random ruin page layout tests
         await page.evaluate(() => {
           [].forEach.call(document.querySelectorAll('.sf-dump'), function (el) {
-            el.style.visibility = 'hidden'
+            el.style.display = 'none'
           })
         })
 
